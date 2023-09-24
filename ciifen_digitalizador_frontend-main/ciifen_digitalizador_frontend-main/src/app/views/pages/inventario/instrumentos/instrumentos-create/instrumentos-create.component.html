@@ -1,0 +1,103 @@
+<nav class="page-breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item active">
+      <a routerLink="/inventario/estaciones">Instrumentos</a>
+    </li>
+    <li class="breadcrumb-item" aria-current="page">Crear</li>
+  </ol>
+</nav>
+
+<div class="card">
+  <div class="card-body">
+    <div class="container">
+      <h2 class="my-4">Crear Instrumento</h2>
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label for="codigo" class="form-label">Código</label>
+            <input
+              type="text"
+              class="form-control"
+              [ngClass]="{
+                'is-invalid':
+                  form.get('codigo')?.invalid && form.get('codigo')?.touched
+              }"
+              id="codigo"
+              formControlName="codigo"
+            />
+            <div class="invalid-feedback">
+              Por favor, ingrese un codigo válido.
+            </div>
+          </div>
+          <div class="col-md-6">
+            <label for="tipo" class="form-label">Tipo</label>
+            <input
+              type="text"
+              class="form-control"
+              [ngClass]="{
+                'is-invalid':
+                  form.get('tipo')?.invalid && form.get('tipo')?.touched
+              }"
+              id="tipo"
+              formControlName="tipo"
+            />
+            <div class="invalid-feedback">
+              Por favor, ingrese un tipo válido.
+            </div>
+          </div>
+          <div class="col-md-6">
+            <label for="marca" class="form-label">Marca</label>
+            <input
+              type="text"
+              class="form-control"
+              [ngClass]="{
+                'is-invalid':
+                  form.get('marca')?.invalid && form.get('marca')?.touched
+              }"
+              id="codigo"
+              formControlName="marca"
+            />
+            <div class="invalid-feedback">
+              Por favor, ingrese un marca válida.
+            </div>
+          </div>
+          <div class="col-md-6">
+            <label for="modelo" class="form-label">Modelo</label>
+            <input
+              type="text"
+              class="form-control"
+              [ngClass]="{
+                'is-invalid':
+                  form.get('modelo')?.invalid && form.get('modelo')?.touched
+              }"
+              id="modelo"
+              formControlName="modelo"
+            />
+            <div class="invalid-feedback">
+              Por favor, ingrese un modelo válido.
+            </div>
+          </div>
+          <div class="col-md-6">
+            <label for="serial" class="form-label">Serial</label>
+            <input
+              type="text"
+              class="form-control"
+              [ngClass]="{
+                'is-invalid':
+                  form.get('serial')?.invalid && form.get('serial')?.touched
+              }"
+              id="serial"
+              formControlName="serial"
+            />
+            <div class="invalid-feedback">
+              Por favor, ingrese un serial válido.
+            </div>
+          </div>
+        </div>
+        <div class="mt-4">
+          <button type="submit" class="btn btn-primary">Crear</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

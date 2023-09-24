@@ -1,0 +1,87 @@
+<nav class="page-breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item active">
+      <a routerLink="/inventario/estaciones">Estaciones</a>
+    </li>
+    <li class="breadcrumb-item" aria-current="page">Crear</li>
+  </ol>
+</nav>
+
+<div class="card">
+  <div class="card-body">
+    <div class="container">
+      <h2 class="my-4">Crear Estación</h2>
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label for="nombre" class="form-label">Nombre</label>
+            <input
+              type="text"
+              class="form-control"
+              [ngClass]="{
+                'is-invalid':
+                  form.get('nombre')?.invalid && form.get('nombre')?.touched
+              }"
+              id="nombre"
+              formControlName="nombre"
+            />
+            <div class="invalid-feedback">
+              Por favor, ingrese un nombre válido.
+            </div>
+          </div>
+          <div class="col-md-6">
+            <label for="latitud" class="form-label">Latitud</label>
+            <input
+              type="number"
+              class="form-control"
+              [ngClass]="{
+                'is-invalid':
+                  form.get('latitud')?.invalid && form.get('latitud')?.touched
+              }"
+              id="latitud"
+              formControlName="latitud"
+            />
+            <div class="invalid-feedback">
+              Por favor, ingrese una latitud válida.
+            </div>
+          </div>
+          <div class="col-md-6">
+            <label for="longitud" class="form-label">Longitud</label>
+            <input
+              type="number"
+              class="form-control"
+              [ngClass]="{
+                'is-invalid':
+                  form.get('longitud')?.invalid && form.get('longitud')?.touched
+              }"
+              id="longitud"
+              formControlName="longitud"
+            />
+            <div class="invalid-feedback">
+              Por favor, ingrese una longitud válida.
+            </div>
+          </div>
+          <div class="col-md-6">
+            <label for="altitud" class="form-label">Altitud</label>
+            <input
+              type="number"
+              class="form-control"
+              [ngClass]="{
+                'is-invalid':
+                  form.get('altitud')?.invalid && form.get('altitud')?.touched
+              }"
+              id="altitud"
+              formControlName="altitud"
+            />
+            <div class="invalid-feedback">
+              Por favor, ingrese una altitud válida.
+            </div>
+          </div>
+        </div>
+        <div class="mt-4">
+          <button type="submit" class="btn btn-primary">Crear</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,17 @@
+.image-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* adjust if needed */
+}
+
+.responsive-image {
+  max-width: 100%;
+  height: auto;
+}
+
+@media (max-width: 600px) {
+  .responsive-image {
+    width: 90%;
+  }
+}

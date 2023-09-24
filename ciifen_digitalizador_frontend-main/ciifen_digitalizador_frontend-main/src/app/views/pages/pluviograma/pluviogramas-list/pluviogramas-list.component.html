@@ -1,0 +1,79 @@
+<nav class="page-breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item active" aria-current="page">Pluviogramas</li>
+  </ol>
+</nav>
+<div class="row">
+  <div class="col-md-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex" style="justify-content: space-between">
+          <h6 class="card-title mt-auto mb-auto">Listado de Pluviogramas</h6>
+          <button
+            style="margin-right: 2rem"
+            type="button"
+            class="btn btn-azul"
+            routerLink="/pluviogramas/create"
+          >
+            Añadir Pluviograma
+          </button>
+        </div>
+
+        <div class="table-responsive pt-3">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>Fecha Inicio</th>
+                <th>Fecha Fin</th>
+                <th>Modelo</th>
+                <th>Ruta</th>
+                <th>Estacion</th>
+                <th>Instrumento</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let pluviograma of pluviogramas">
+                <td>{{ pluviograma.fecha_inicio }}</td>
+                <td>
+                  {{ pluviograma.fecha_fin }}
+                </td>
+                <td>
+                  {{ pluviograma.modelo }}
+                </td>
+                <td>{{ pluviograma.ruta }}</td>
+                <td>{{ pluviograma.estacion?.nombre }}</td>
+                <td>{{ pluviograma.instrumento?.codigo }}</td>
+                <td class="d-flex" style="justify-content: space-evenly">
+                  <button
+                    class="btn btn-success"
+                    routerLink="/pluviogramas/{{ pluviograma.id }}"
+                  >
+                    <i data-feather="eye" appFeatherIcon></i>
+                  </button>
+                  <button
+                    class="btn btn-warning"
+                    routerLink="/pluviogramas/{{ pluviograma.id }}/edit"
+                  >
+                    <i
+                      style="color: white"
+                      data-feather="edit"
+                      appFeatherIcon
+                    ></i>
+                  </button>
+
+                  <button
+                    class="btn btn-danger"
+                    (click)="borrarPluviograma(pluviograma)"
+                  >
+                    <i data-feather="trash-2" appFeatherIcon></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

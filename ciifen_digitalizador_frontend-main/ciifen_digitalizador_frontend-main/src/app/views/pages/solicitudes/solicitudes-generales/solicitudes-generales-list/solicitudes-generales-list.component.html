@@ -1,0 +1,266 @@
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+  <li class="nav-item" role="presentation">
+    <button
+      class="nav-link active"
+      id="home-tab"
+      data-bs-toggle="tab"
+      data-bs-target="#home"
+      type="button"
+      role="tab"
+      aria-controls="home"
+      aria-selected="true"
+    >
+      Solicitudes
+    </button>
+  </li>
+</ul>
+<div class="tab-content" id="myTabContent">
+  <div
+    class="tab-pane fade show active"
+    id="home"
+    role="tabpanel"
+    aria-labelledby="home-tab"
+  >
+    <div class="card mb-2">
+      <div class="card-body" style="padding-top: 0; padding-bottom: 0">
+        <div class="estado-filter my-4">
+          <h5>Estado:</h5>
+          <div class="form-check" *ngFor="let estadoObj of optionsEstados">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              value="{{ estadoObj.estado_proceso }}"
+              id="{{ 'estado-' + estadoObj.estado_proceso }}"
+              [checked]="selectedEstados.includes(estadoObj.estado_proceso)"
+              (change)="onEstadoChange(estadoObj.estado_proceso, $event)"
+            />
+            <label
+              class="form-check-label"
+              for="{{ 'estado-' + estadoObj.estado_proceso }}"
+            >
+              {{ estadoObj.estado_proceso | titlecase }}
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card mb-2">
+      <div class="card-body" style="padding-top: 0; padding-bottom: 0">
+        <div class="search-container my-4">
+          <h5>Producto:</h5>
+          <form class="row gx-2 gy-2 align-items-center" (ngSubmit)="search()">
+            <div class="col-12 col-sm-8">
+              <input
+                [(ngModel)]="searchKeyword"
+                name="searchKeyword"
+                type="text"
+                class="form-control"
+                placeholder="Buscar por producto"
+              />
+            </div>
+            <div class="col-12 col-sm-4">
+              <button type="submit" class="btn btn-primary w-100">
+                Buscar
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel-solicitudes">
+      <div class="accordion-item" *ngFor="let solicitud of solicitudes">
+        <h2 class="accordion-header" id="headingOne">
+          <button
+            class="accordion-button collapsed"
+            type="button"
+            data-bs-toggle="collapse"
+            [attr.data-bs-target]="'#tg-' + solicitud.id"
+            aria-expanded="true"
+            aria-controls="collapseOne"
+          >
+            <strong>
+              <span>{{ solicitud.codigo | uppercase }} </span>
+              <span class="d-none d-sm-inline">
+                {{
+                  solicitud.fecha_publicacion.slice(6, 10) +
+                    "-" +
+                    solicitud.fecha_publicacion.slice(3, 5) +
+                    "-" +
+                    solicitud.fecha_publicacion.slice(0, 2)
+                    | date
+                    | uppercase
+                }}
+              </span>
+              <span
+                *ngIf="
+                  solicitud.presupuesto_referencial !== null &&
+                  solicitud.presupuesto_referencial !== 'NaN'
+                "
+                style="color: green"
+                class="mx-auto mx-sm-0"
+                >{{
+                  solicitud.presupuesto_referencial
+                    | currency : "USD" : "symbol" : "1.2-2"
+                }}</span
+              >
+              <span
+                *ngIf="solicitud.presupuesto_referencial === null"
+                style="color: green"
+                class="mx-auto mx-sm-0"
+                >-</span
+              >
+            </strong>
+          </button>
+        </h2>
+        <div
+          id="tg-{{ solicitud.id }}"
+          class="accordion-collapse collapse"
+          aria-labelledby="headingOne"
+          data-bs-parent="#accordionExample"
+        >
+          <div class="accordion-body">
+            <div class="card">
+              <div class="card-header">
+                <h5>{{ solicitud.entidad | titlecase }}</h5>
+              </div>
+              <div class="card-body">
+                <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+                  <button
+                    class="btn btn-primary"
+                    type="button"
+                    (click)="goToDetail(solicitud.id)"
+                  >
+                    Ver Detalles
+                  </button>
+                </div>
+                <h5 class="card-title">
+                  <!-- Autoridad: {{ solicitud.funcionario_encargado }} -->
+                </h5>
+                <h5 class="card-title">
+                  <strong>Presupuesto</strong>:
+                  {{
+                    solicitud.presupuesto_referencial
+                      | currency : "USD" : "symbol" : "1.2-2"
+                  }}
+                </h5>
+                <p class="card-text">
+                  <strong>Estado</strong>:
+                  {{ solicitud.estado_proceso | titlecase }}
+                </p>
+                <p class="card-text">
+                  <strong>Lugar</strong>: {{ solicitud.lugar | titlecase }}
+                </p>
+                <p class="card-text"></p>
+                <div class="mt-3">
+                  <div class="product-grid header">
+                    <div><strong>Producto</strong></div>
+                    <div><strong>Cantidad</strong></div>
+                    <div><strong>Precio Unitario</strong></div>
+                    <div><strong>Presupuesto</strong></div>
+                    <div><strong>Precio SOCE</strong></div>
+                    <div><strong>Estado</strong></div>
+                    <div><strong>Dosis</strong></div>
+                    <div><strong>Presentación</strong></div>
+                  </div>
+                  <div
+                    *ngFor="let farmaco of solicitud.farmacos"
+                    class="product-grid"
+                  >
+                    <div class="mobile-label">Producto:</div>
+                    <div>{{ farmaco.nombre_farmaco | titlecase }}</div>
+                    <div class="mobile-label">Cantidad:</div>
+                    <div>{{ farmaco.cantidad }}</div>
+                    <div class="mobile-label">Precio Unitario:</div>
+                    <div
+                      *ngIf="
+                        farmaco.precio_unitario !== null &&
+                        farmaco.precio_unitario !== 'NaN'
+                      "
+                    >
+                      {{
+                        farmaco.precio_unitario
+                          | currency : "USD" : "symbol" : "1.2-2"
+                      }}
+                    </div>
+                    <div
+                      *ngIf="
+                        farmaco.precio_unitario === null ||
+                        farmaco.precio_unitario === 'NaN'
+                      "
+                    >
+                      -
+                    </div>
+                    <div class="mobile-label">Presupuesto:</div>
+                    <div
+                      *ngIf="
+                        farmaco.presupuesto !== null &&
+                        farmaco.presupuesto !== 'NaN'
+                      "
+                    >
+                      {{
+                        farmaco.presupuesto
+                          | currency : "USD" : "symbol" : "1.2-2"
+                      }}
+                    </div>
+                    <div
+                      *ngIf="
+                        farmaco.presupuesto === null ||
+                        farmaco.presupuesto === 'NaN'
+                      "
+                    >
+                      -
+                    </div>
+                    <div class="mobile-label">Precio SOCE:</div>
+                    <div
+                      *ngIf="
+                        farmaco.precio_soce !== null &&
+                        farmaco.precio_soce !== 'NaN'
+                      "
+                    >
+                      {{
+                        farmaco.precio_soce
+                          | currency : "USD" : "symbol" : "1.2-2"
+                      }}
+                    </div>
+                    <div
+                      *ngIf="
+                        farmaco.precio_soce === null ||
+                        farmaco.precio_soce === 'NaN'
+                      "
+                    >
+                      -
+                    </div>
+                    <div class="mobile-label">Estado:</div>
+                    <div>{{ farmaco.estado | titlecase }}</div>
+                    <div class="mobile-label">Dosis:</div>
+                    <div>{{ farmaco.dosis || "-" }}</div>
+                    <div class="mobile-label">Presentación:</div>
+                    <div>{{ farmaco.presentacion || "-" }}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <nav aria-label="Page navigation example" style="margin-top: 1rem">
+      <ul class="pagination" style="justify-content: flex-end">
+        <li class="page-item" [class.disabled]="currentPage === 1">
+          <a class="page-link" (click)="loadPage(currentPage - 1)">Anterior</a>
+        </li>
+        <li
+          class="page-item"
+          *ngFor="let page of pagesArray"
+          [class.active]="page === currentPage"
+        >
+          <a class="page-link" (click)="loadPage(page)">{{ page }}</a>
+        </li>
+        <li class="page-item" [class.disabled]="currentPage === totalPages">
+          <a class="page-link" (click)="loadPage(currentPage + 1)">Siguiente</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>

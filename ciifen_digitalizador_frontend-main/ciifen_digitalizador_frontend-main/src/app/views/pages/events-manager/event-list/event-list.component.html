@@ -1,0 +1,373 @@
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+  <li class="nav-item" role="presentation">
+    <button
+      class="nav-link active"
+      id="home-tab"
+      data-bs-toggle="tab"
+      data-bs-target="#home"
+      type="button"
+      role="tab"
+      aria-controls="home"
+      aria-selected="true"
+    >
+      Solicitudes
+    </button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button
+      class="nav-link"
+      id="profile-tab"
+      data-bs-toggle="tab"
+      data-bs-target="#profile"
+      type="button"
+      role="tab"
+      aria-controls="profile"
+      aria-selected="false"
+    >
+      Matched Solicitudes
+    </button>
+  </li>
+</ul>
+<div class="tab-content" id="myTabContent">
+  <div
+    class="tab-pane fade show active"
+    id="home"
+    role="tabpanel"
+    aria-labelledby="home-tab"
+  >
+    <div class="card mb-2">
+      <div class="card-body" style="padding-top: 0; padding-bottom: 0">
+        <div class="estado-filter my-4">
+          <h5>Estado:</h5>
+          <div class="form-check" *ngFor="let estadoObj of uniqueEstados">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              value="{{ estadoObj.estado_proceso }}"
+              id="{{ 'estado-' + estadoObj.estado_proceso }}"
+              [checked]="selectedEstados.includes(estadoObj.estado_proceso)"
+              (change)="onEstadoChange(estadoObj.estado_proceso, $event)"
+            />
+            <label
+              class="form-check-label"
+              for="{{ 'estado-' + estadoObj.estado_proceso }}"
+            >
+              {{ estadoObj.estado_proceso | titlecase }}
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card mb-2">
+      <div class="card-body" style="padding-top: 0; padding-bottom: 0">
+        <div class="search-container my-4">
+          <h5>Producto:</h5>
+          <form class="row gx-2 gy-2 align-items-center" (ngSubmit)="search()">
+            <div class="col-12 col-sm-8">
+              <input
+                [(ngModel)]="searchKeyword"
+                name="searchKeyword"
+                type="text"
+                class="form-control"
+                placeholder="Buscar por producto"
+              />
+            </div>
+            <div class="col-12 col-sm-4">
+              <button type="submit" class="btn btn-primary w-100">
+                Buscar
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel-solicitudes">
+      <div class="accordion-item mx-3" *ngFor="let solicitud of solicitudes">
+        <h2 class="accordion-header" id="headingOne">
+          <button
+            class="accordion-button collapsed"
+            type="button"
+            data-bs-toggle="collapse"
+            [attr.data-bs-target]="'#' + solicitud.codigo"
+            aria-expanded="true"
+            aria-controls="collapseOne"
+          >
+            <strong>
+              <span>{{ solicitud.codigo | uppercase}}  </span>
+              <span class="d-none d-sm-inline">
+                {{
+                  solicitud.fecha_publicacion.slice(6, 10) +
+                    "-" +
+                    solicitud.fecha_publicacion.slice(3, 5) +
+                    "-" +
+                    solicitud.fecha_publicacion.slice(0, 2) | date | uppercase
+                }} 
+              </span>
+              <span style="color: green" class="mx-auto mx-sm-0">{{
+                solicitud.presupuesto_referencial | currency : "USD" : true : "1.2-2"
+              }}</span>
+            </strong>
+          </button>
+        </h2>
+        <div
+          id="{{ solicitud.codigo }}"
+          class="accordion-collapse collapse"
+          aria-labelledby="headingOne"
+          data-bs-parent="#accordionExample"
+        >
+          <div class="accordion-body">
+            <div class="card">
+              <div class="card-header">
+                <h5>{{ solicitud.entidad | titlecase }}</h5>
+              </div>
+              <div class="card-body">
+                <h5 class="card-title">
+                  <!-- Autoridad: {{ solicitud.funcionario_encargado }} -->
+                </h5>
+                <h5 class="card-title">
+                  <strong>Presupuesto</strong>:
+                  {{ solicitud.presupuesto_referencial | currency : "USD" : true : "1.2-2"}}
+                </h5>
+                <p class="card-text">
+                  <strong>Estado</strong>:
+                  {{ solicitud.estado_proceso | titlecase }}
+                </p>
+                <p class="card-text">
+                  <strong>Lugar</strong>: {{ solicitud.lugar | titlecase }}
+                </p>
+                <p class="card-text"></p>
+                <div class="mt-3">
+                  <div class="product-grid header">
+                    <div><strong>Producto</strong></div>
+                    <div><strong>Cantidad</strong></div>
+                    <div><strong>Precio Unitario</strong></div>
+                    <div><strong>Presupuesto</strong></div>
+                    <div><strong>Precio SOCE</strong></div>
+                    <div><strong>Estado</strong></div>
+                    <div><strong>Dosis</strong></div>
+                    <div><strong>Presentación</strong></div>
+                  </div>
+                  <div
+                    *ngFor="let farmaco of solicitud.farmacos"
+                    class="product-grid"
+                  >
+                    <div class="mobile-label">Producto:</div>
+                    <div>{{ farmaco.nombre_farmaco | titlecase }}</div>
+                    <div class="mobile-label">Cantidad:</div>
+                    <div>{{ farmaco.cantidad }}</div>
+                    <div class="mobile-label">Precio Unitario:</div>
+                    <div>
+                      {{
+                        farmaco.precio_unitario
+                          | currency : "USD" : true : "1.2-2"
+                      }}
+                    </div>
+                    <div class="mobile-label">Presupuesto:</div>
+                    <div>
+                      {{
+                        farmaco.presupuesto | currency : "USD" : true : "1.2-2"
+                      }}
+                    </div>
+                    <div class="mobile-label">Precio SOCE:</div>
+                    <div>
+                      {{
+                        farmaco.precio_soce | currency : "USD" : true : "1.2-2"
+                      }}
+                    </div>
+                    <div class="mobile-label">Estado:</div>
+                    <div>{{ farmaco.estado | titlecase }}</div>
+                    <div class="mobile-label">Dosis:</div>
+                    <div>{{ farmaco.dosis || "-" }}</div>
+                    <div class="mobile-label">Presentación:</div>
+                    <div>{{ farmaco.presentacion || "-" }}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <nav aria-label="Page navigation example" style="margin-top: 1rem">
+      <ul class="pagination" style="justify-content: flex-end">
+        <li class="page-item" [class.disabled]="currentPage === 1">
+          <a class="page-link" (click)="loadPage(currentPage - 1)">Anterior</a>
+        </li>
+        <li
+          class="page-item"
+          *ngFor="let page of pagesArray"
+          [class.active]="page === currentPage"
+        >
+          <a class="page-link" (click)="loadPage(page)">{{ page }}</a>
+        </li>
+        <li class="page-item" [class.disabled]="currentPage === totalPages">
+          <a class="page-link" (click)="loadPage(currentPage + 1)">Siguiente</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+  <div
+    class="tab-pane fade"
+    id="profile"
+    role="tabpanel"
+    aria-labelledby="profile-tab"
+  >
+    <div class="card mb-2">
+      <div class="card-body" style="padding-top: 0; padding-bottom: 0">
+        <div class="estado-filter my-4">
+          <h5>Estado:</h5>
+          <div class="form-check" *ngFor="let estadoObj of uniqueEstados">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              value="{{ estadoObj.estado_proceso }}"
+              id="{{ 'estado-' + estadoObj.estado_proceso }}"
+              [checked]="selectedEstados.includes(estadoObj.estado_proceso)"
+              (change)="onEstadoChange(estadoObj.estado_proceso, $event)"
+            />
+            <label
+              class="form-check-label"
+              for="{{ 'estado-' + estadoObj.estado_proceso }}"
+            >
+              {{ estadoObj.estado_proceso | titlecase }}
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card mb-2">
+      <div class="card-body" style="padding-top: 0; padding-bottom: 0">
+        <div class="search-container my-4">
+          <h5>Producto:</h5>
+          <form class="row gx-2 gy-2 align-items-center" (ngSubmit)="search()">
+            <div class="col-12 col-sm-8">
+              <input
+                [(ngModel)]="searchKeyword"
+                name="searchKeyword"
+                type="text"
+                class="form-control"
+                placeholder="Buscar por producto"
+              />
+            </div>
+            <div class="col-12 col-sm-4">
+              <button type="submit" class="btn btn-primary w-100">
+                Buscar
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel-solicitudes">
+      <div
+        class="accordion-item mx-3"
+        *ngFor="let solicitud of solicitudesPablo"
+      >
+        <h2 class="accordion-header" id="headingOne">
+          <button
+            class="accordion-button collapsed"
+            type="button"
+            data-bs-toggle="collapse"
+            [attr.data-bs-target]="'#solicitud-' + solicitud.id"
+            aria-expanded="true"
+            aria-controls="collapseOne"
+          >
+            <strong
+              >#{{ solicitud.id }} - {{ solicitud.fecha | date }}
+              <span
+                [ngClass]="{
+                  approved: solicitud.farmacos.length == 1,
+                  pending: solicitud.farmacos.length != 1
+                }"
+                ><ng-container *ngIf="solicitud.farmacos.length == 1">
+                  Completo
+                </ng-container>
+                <ng-container *ngIf="solicitud.farmacos.length != 1">
+                  Parcial
+                </ng-container></span
+              ></strong
+            >
+          </button>
+        </h2>
+        <div
+          id="{{ 'solicitud-' + solicitud.id }}"
+          class="accordion-collapse collapse"
+          aria-labelledby="headingOne"
+          data-bs-parent="#accordionExample"
+        >
+          <div class="accordion-body">
+            <div class="card">
+              <div class="card-header">
+                <h5>{{ solicitud.entidad }}</h5>
+              </div>
+              <div class="card-body">
+                <h5 class="card-title">Autoridad: {{ solicitud.autoridad }}</h5>
+                <p class="card-text">
+                  <strong>Estado</strong>: {{ solicitud.estado }}
+                </p>
+                <p class="card-text">
+                  <strong>Presupuesto</strong>: {{ solicitud.presupuesto }}
+                </p>
+                <p class="card-text">
+                  <strong>Vigencia</strong>: {{ solicitud.vigencia }}
+                </p>
+                <p class="card-text">
+                  <strong>Plazo</strong>: {{ solicitud.plazo }}
+                </p>
+                <div class="mt-3">
+                  <div class="product-grid header">
+                    <div><strong>Producto</strong></div>
+                    <div><strong>Cantidad</strong></div>
+                    <div><strong>Estado</strong></div>
+                    <div><strong>Dosis</strong></div>
+                    <div><strong>Presentación</strong></div>
+                  </div>
+                  <div
+                    *ngFor="let farmaco of solicitud.farmacos"
+                    class="product-grid"
+                    [ngStyle]="{
+                      'background-color':
+                        farmaco.nombre_farmaco === 'norepinefrina'
+                          ? '#d1fae4'
+                          : 'initial'
+                    }"
+                  >
+                    <div class="mobile-label">Producto:</div>
+                    <div>{{ farmaco.farmaco_producto }}</div>
+                    <div class="mobile-label">Cantidad:</div>
+                    <div>{{ farmaco.cantidad }}</div>
+                    <div class="mobile-label">Estado:</div>
+                    <div>{{ farmaco.estado }}</div>
+                    <div class="mobile-label">Dosis:</div>
+                    <div>{{ farmaco.dosis || "-" }}</div>
+                    <div class="mobile-label">Presentación:</div>
+                    <div>{{ farmaco.presentacion || "-" }}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <nav aria-label="Page navigation example" style="margin-top: 1rem">
+      <ul class="pagination" style="justify-content: flex-end">
+        <li class="page-item" [class.disabled]="currentPage === 1">
+          <a class="page-link" (click)="loadPage(currentPage - 1)">Anterior</a>
+        </li>
+        <li
+          class="page-item"
+          *ngFor="let page of pagesArray"
+          [class.active]="page === currentPage"
+        >
+          <a class="page-link" (click)="loadPage(page)">{{ page }}</a>
+        </li>
+        <li class="page-item" [class.disabled]="currentPage === totalPages">
+          <a class="page-link" (click)="loadPage(currentPage + 1)">Siguiente</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>

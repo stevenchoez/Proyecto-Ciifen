@@ -1,0 +1,202 @@
+<nav class="page-breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item active">
+      <a routerLink="/pluviogramas">Pluviogramas</a>
+    </li>
+    <li class="breadcrumb-item" aria-current="page">Editar</li>
+  </ol>
+</nav>
+
+<div class="card">
+  <div class="card-body">
+    <div class="container">
+      <h2 class="my-4">Editar Pluviograma</h2>
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label for="fecha_inicio" class="form-label">Fecha Inicio</label>
+            <input
+              type="datetime-local"
+              class="form-control"
+              id="fecha_inicio"
+              name="fecha_inicio"
+              formControlName="fecha_inicio"
+              required
+            />
+            <div class="invalid-feedback">
+              Por favor, ingrese un fecha inicio válida.
+            </div>
+          </div>
+          <div class="col-md-6">
+            <label for="fecha_fin" class="form-label">Fecha Fin</label>
+            <input
+              type="datetime-local"
+              class="form-control"
+              id="fecha_fin"
+              name="fecha_fin"
+              formControlName="fecha_fin"
+              required
+            />
+            <div class="invalid-feedback">
+              Por favor, ingrese un fecha fin válida.
+            </div>
+          </div>
+          <div class="col-md-6">
+            <label for="modelo" class="form-label">Modelo</label>
+            <input
+              type="text"
+              class="form-control"
+              [ngClass]="{
+                'is-invalid':
+                  form.get('modelo')?.invalid && form.get('modelo')?.touched
+              }"
+              id="modelo"
+              formControlName="modelo"
+            />
+            <div class="invalid-feedback">
+              Por favor, ingrese un modelo válido.
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <label for="ruta" class="form-label">Ruta</label>
+            <input
+              type="text"
+              class="form-control"
+              [ngClass]="{
+                'is-invalid':
+                  form.get('ruta')?.invalid && form.get('ruta')?.touched
+              }"
+              id="ruta"
+              formControlName="ruta"
+            />
+            <div class="invalid-feedback">
+              Por favor, ingrese una ruta válida.
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <label for="fecha_inicio" class="form-label">Estación</label>
+
+            <select
+              class="form-select"
+              id="estacion"
+              formControlName="estacion"
+              required
+            >
+              <option value="" disabled selected>Selecciona estación</option>
+              <option *ngFor="let estacion of estaciones" [value]="estacion.id">
+                {{ estacion.nombre }}
+              </option>
+            </select>
+          </div>
+          <div class="col-md-6">
+            <label for="fecha_inicio" class="form-label">Instrumento</label>
+            <select
+              class="form-select"
+              id="instrumento"
+              formControlName="instrumento"
+              required
+            >
+              <option value="" disabled selected>Selecciona instrumento</option>
+              <option
+                *ngFor="let instrumento of instrumentos"
+                [value]="instrumento.id"
+              >
+                {{ instrumento.codigo }}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="row g-3">
+          <div class="col-md-12 mt-4">
+            <label for="imagen" class="form-label">Imagen</label>
+            <input
+              type="file"
+              class="form-control"
+              id="imagen"
+              (change)="onImageSelected($event)"
+            />
+          </div>
+          <div class="col-md-12 mt-4">
+            <button
+              type="button"
+              class="btn btn-info"
+              (click)="digitalizar(basicModal)"
+            >
+              Digitalizar
+            </button>
+          </div>
+        </div>
+        <div class="mt-4">
+          <button type="submit" class="btn btn-primary">Editar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<ng-template #basicModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">Digitalizador</h5>
+    <button
+      type="button"
+      class="btn-close"
+      (click)="modal.close('by: close icon')"
+      aria-label="Close"
+    ></button>
+  </div>
+  <div class="modal-body">
+    <div
+      class="tab-pane fade"
+      [ngClass]="{ 'show active': activeTab === 'chart' }"
+      id="chart-content-area"
+      role="tabpanel"
+      aria-labelledby="chart-tab"
+    >
+      <div id="chart-area"></div>
+    </div>
+    <div
+      class="tab-pane fade"
+      [ngClass]="{ 'show active': activeTab === 'image' }"
+      id="image-area"
+      role="tabpanel"
+      aria-labelledby="image-tab"
+    >
+      <img src="{{ imageUrl }}" alt="Generated Image" />
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button
+      *ngIf="isDrawingMode"
+      type="button"
+      class="btn btn-info"
+      (click)="toggleDrawingMode()"
+    >
+      <i data-feather="crop" appFeatherIcon></i>Cambiar a seleccion
+    </button>
+    <button
+      *ngIf="!isDrawingMode"
+      type="button"
+      class="btn btn-info"
+      (click)="toggleDrawingMode()"
+    >
+      <i data-feather="pen-tool" appFeatherIcon></i>Cambiar a dibujo
+    </button>
+    <button
+      type="button"
+      class="btn btn-danger"
+      (click)="deleteSelectedPoints()"
+    >
+      Borrar
+    </button>
+
+    <button type="button" class="btn btn-primary" (click)="interpolateGraph()">
+      Autofix
+    </button>
+  </div>
+</ng-template>
+
+<!-- Close result -->
+<p *ngIf="basicModalCloseResult != ''" class="mt-2">
+  {{ basicModalCloseResult }}
+</p>

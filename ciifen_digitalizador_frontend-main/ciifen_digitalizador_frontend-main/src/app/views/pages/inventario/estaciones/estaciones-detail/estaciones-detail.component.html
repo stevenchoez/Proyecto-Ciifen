@@ -1,0 +1,39 @@
+<nav class="page-breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item active">
+      <a routerLink="/inventario/estaciones">Estaciones</a>
+    </li>
+    <li class="breadcrumb-item" aria-current="page">
+      {{ estacion?.nombre }}
+    </li>
+  </ol>
+</nav>
+
+<div class="row">
+  <div class="col-md-12 mx-auto">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Detalles Generales</h5>
+      </div>
+      <div class="card-body">
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            <span class="fw-bold">Nombre:</span>
+            {{ estacion?.nombre }}
+          </li>
+          <li class="list-group-item">
+            <span class="fw-bold">Latitud:</span> {{ estacion?.latitud }}
+          </li>
+          <li class="list-group-item">
+            <span class="fw-bold">Longitud:</span>
+            {{ estacion?.longitud }}
+          </li>
+          <li class="list-group-item">
+            <span class="fw-bold">Altitud:</span>
+            {{ estacion?.altitud }}
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

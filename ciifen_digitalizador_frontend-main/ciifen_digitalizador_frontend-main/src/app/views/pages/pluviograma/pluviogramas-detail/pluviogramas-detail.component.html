@@ -1,0 +1,76 @@
+<nav class="page-breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item active">
+      <a routerLink="/pluviogramas">Pluviogramas</a>
+    </li>
+    <li class="breadcrumb-item" aria-current="page">
+      {{ pluviograma?.fecha_inicio }} {{ pluviograma?.fecha_fin }}
+      {{ pluviograma?.modelo }}
+    </li>
+  </ol>
+</nav>
+
+<div class="row">
+  <div class="col-md-12 mx-auto">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Detalles Generales</h5>
+      </div>
+      <div class="card-body">
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            <span class="fw-bold">Fecha Inicio:</span>
+            {{ pluviograma?.fecha_inicio }}
+          </li>
+          <li class="list-group-item">
+            <span class="fw-bold">Fecha Fin:</span> {{ pluviograma?.fecha_fin }}
+          </li>
+          <li class="list-group-item">
+            <span class="fw-bold">Modelo:</span>
+            {{ pluviograma?.modelo | json }}
+          </li>
+          <li class="list-group-item">
+            <span class="fw-bold">Estacion:</span>
+            {{ pluviograma?.estacion?.nombre }}
+          </li>
+          <li class="list-group-item">
+            <span class="fw-bold">Instrumento:</span>
+            {{ pluviograma?.instrumento?.codigo }}
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row mt-5">
+  <div class="col-md-8 mx-auto">
+    <div class="card">
+      <div class="card-body">
+        <img class="img-fluid" src="{{ imageUrl }}" alt="Generated Image" />
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4 mx-auto">
+    <div class="card">
+      <div class="card-body">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Tiempo</th>
+              <th>Cantidad (mm)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let interval of time_series_intervals">
+              <tr>
+                <td>{{ interval.tiempo }}</td>
+                <td>{{ interval.cantidad }}</td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

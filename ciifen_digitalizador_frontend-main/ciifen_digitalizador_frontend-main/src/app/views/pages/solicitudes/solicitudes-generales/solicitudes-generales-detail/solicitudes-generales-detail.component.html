@@ -1,0 +1,134 @@
+<div class="container mt-4">
+  <div class="card">
+    <div class="card-header">
+      <a routerLink="/solicitudes/generales" class="btn btn-primary mb-2"
+        >Volver a solicitudes</a
+      >
+      <hr />
+      <h4>{{ solicitud.codigo | uppercase }}</h4>
+      <a
+        style="background-color: gainsboro"
+        class="button btn mt-1"
+        href="https://www.compraspublicas.gob.ec/ProcesoContratacion/compras/PC/informacionProcesoContratacion2.cpe?idSoliCompra={{
+          solicitud.url
+        }}"
+        target="_blank"
+      >
+        Ver en SERCOP</a
+      >
+    </div>
+    <div class="card-body">
+      <h5 class="card-title">{{ solicitud.entidad | titlecase }}</h5>
+      <p class="card-text"><strong>Objeto:</strong> {{ solicitud.objeto }}</p>
+      <p class="card-text">
+        <strong>Presupuesto Referencial:</strong>
+        {{
+          solicitud.presupuesto_referencial
+            | currency : "USD" : "symbol" : "1.2-2"
+        }}
+      </p>
+      <p class="card-text">
+        <strong>Tipo de Compra:</strong> {{ solicitud.tipo_compra }}
+      </p>
+      <p class="card-text">
+        <strong>Tipo Contratacion:</strong> {{ solicitud.tipo_contratacion }}
+      </p>
+      <p class="card-text">
+        <strong>Fecha de Publicación:</strong> {{ solicitud.fecha_publicacion }}
+      </p>
+      <p class="card-text">
+        <strong>Estado del Proceso:</strong> {{ solicitud.estado_proceso }}
+      </p>
+      <p class="card-text">
+        <strong>Lugar:</strong> {{ solicitud.lugar | titlecase }}
+      </p>
+      <p class="card-text mt-3">
+        <strong>Fecha Adjudicacion:</strong> {{ solicitud.fecha_adjudicacion }}
+      </p>
+      <p class="card-text">
+        <strong>Fecha Fin Oferta:</strong> {{ solicitud.fecha_fin_oferta }}
+      </p>
+      <p class="card-text">
+        <strong>Plazo Entrega:</strong> {{ solicitud.plazo_entrega }}
+      </p>
+
+      <p class="card-text">
+        <strong>Vigencia Oferta:</strong> {{ solicitud.vigencia_oferta }}
+      </p>
+
+      <div class="mt-3">
+        <div class="product-grid header">
+          <div><strong>Producto</strong></div>
+          <div><strong>Cantidad</strong></div>
+          <div><strong>Precio Unitario</strong></div>
+          <div><strong>Presupuesto</strong></div>
+          <div><strong>Precio SOCE</strong></div>
+          <div><strong>Estado</strong></div>
+          <div><strong>Dosis</strong></div>
+          <div><strong>Presentación</strong></div>
+        </div>
+        <div *ngFor="let farmaco of solicitud.farmacos" class="product-grid">
+          <div class="mobile-label">Producto:</div>
+          <div>{{ farmaco.nombre_farmaco | titlecase }}</div>
+          <div class="mobile-label">Cantidad:</div>
+          <div>{{ farmaco.cantidad }}</div>
+          <div class="mobile-label">Precio Unitario:</div>
+          <div
+            *ngIf="
+              farmaco.precio_unitario !== null &&
+              farmaco.precio_unitario !== 'NaN'
+            "
+          >
+            {{
+              farmaco.precio_unitario | currency : "USD" : "symbol" : "1.2-2"
+            }}
+          </div>
+          <div
+            *ngIf="
+              farmaco.precio_unitario === null ||
+              farmaco.precio_unitario === 'NaN'
+            "
+          >
+            -
+          </div>
+          <div class="mobile-label">Presupuesto:</div>
+          <div
+            *ngIf="
+              farmaco.presupuesto !== null && farmaco.presupuesto !== 'NaN'
+            "
+          >
+            {{ farmaco.presupuesto | currency : "USD" : "symbol" : "1.2-2" }}
+          </div>
+          <div
+            *ngIf="
+              farmaco.presupuesto === null || farmaco.presupuesto === 'NaN'
+            "
+          >
+            -
+          </div>
+          <div class="mobile-label">Precio SOCE:</div>
+          <div
+            *ngIf="
+              farmaco.precio_soce !== null && farmaco.precio_soce !== 'NaN'
+            "
+          >
+            {{ farmaco.precio_soce | currency : "USD" : "symbol" : "1.2-2" }}
+          </div>
+          <div
+            *ngIf="
+              farmaco.precio_soce === null || farmaco.precio_soce === 'NaN'
+            "
+          >
+            -
+          </div>
+          <div class="mobile-label">Estado:</div>
+          <div>{{ farmaco.estado | titlecase }}</div>
+          <div class="mobile-label">Dosis:</div>
+          <div>{{ farmaco.dosis || "-" }}</div>
+          <div class="mobile-label">Presentación:</div>
+          <div>{{ farmaco.presentacion || "-" }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,68 @@
+<div class="row m-1">
+  <div class="col-lg-7 col-xl-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-baseline mb-2">
+          <h6 class="card-title mb-0">Total Solicitudes</h6>
+        </div>
+        <div class="row align-items-start">
+          <div class="col-md-7">
+            <p class="text-muted tx-13 mb-3 mb-md-0">
+              Revenue is the income that a business has from its normal business
+              activities, usually from the sale of goods and services to
+              customers.
+            </p>
+          </div>
+          <div class="col-md-5 d-flex justify-content-md-end">
+            <div
+              class="btn-group mb-3 mb-md-0"
+              role="group"
+              aria-label="Basic example"
+            >
+              <button
+                type="button"
+                class="btn btn-outline-primary"
+                [ngClass]="{ 'btn-primary': selectedRango === 0 }"
+                [ngStyle]="{ 'color': selectedRango === 0 ? 'white' : ''}"
+                (click)="getTotalByFechaRango(0)"
+              >
+                Hoy
+              </button>
+              <button
+                type="button"
+                class="btn btn-outline-primary d-none d-md-block"
+                [ngClass]="{ 'btn-primary': selectedRango === 6 }"
+                [ngStyle]="{ 'color': selectedRango === 6 ? 'white' : ''}"
+                (click)="getTotalByFechaRango(6)"
+              >
+                Ultimos 7 Dias
+              </button>
+              <button
+                type="button"
+                class="btn btn-outline-primary"
+                [ngClass]="{ 'btn-primary': selectedRango === 29 }"
+                [ngStyle]="{ 'color': selectedRango === 29 ? 'white' : ''}"
+                (click)="getTotalByFechaRango(29)"
+              >
+                Ultimos 30 Dias
+              </button>
+            </div>
+          </div>
+        </div>
+        <apx-chart
+          [series]="monthlySalesChartOptions.series"
+          [chart]="monthlySalesChartOptions.chart"
+          [colors]="monthlySalesChartOptions.colors"
+          [fill]="monthlySalesChartOptions.fill"
+          [grid]="monthlySalesChartOptions.grid"
+          [xaxis]="monthlySalesChartOptions.xaxis"
+          [yaxis]="monthlySalesChartOptions.yaxis"
+          [legend]="monthlySalesChartOptions.legend"
+          [stroke]="monthlySalesChartOptions.stroke"
+          [dataLabels]="monthlySalesChartOptions.dataLabels"
+          [plotOptions]="monthlySalesChartOptions.plotOptions"
+        ></apx-chart>
+      </div>
+    </div>
+  </div>
+</div>

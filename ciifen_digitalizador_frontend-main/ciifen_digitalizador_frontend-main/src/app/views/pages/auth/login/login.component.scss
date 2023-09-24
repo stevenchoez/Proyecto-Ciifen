@@ -1,0 +1,46 @@
+:host {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+body, html {
+  height: 100%;
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.container-fluid {
+  height: 100%;
+}
+
+.card {
+  border: none;
+  border-radius: 8px;
+}
+
+.card-body {
+  padding: 30px;
+}
+
+.logo-img {
+  width: 300px;
+  height: 235px;
+  object-fit: contain;
+  margin: auto;
+  object-fit: cover;
+}
+
+.form-label {
+  font-size: 1.1rem;
+  color: black;
+  font-weight: 600;
+}
+
+.btn {
+  border-radius: 20px;
+  padding: 10px;
+  font-size: 18px;
+  background-color: #EDC418;
+  border-color: #EDC418;
+}
